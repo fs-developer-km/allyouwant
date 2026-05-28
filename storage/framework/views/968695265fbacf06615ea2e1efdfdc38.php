@@ -124,7 +124,7 @@ unset($__errorArgs, $__bag); ?>
         <div class="card-header"><div class="card-title">🖼️ Category Image</div></div>
         <div class="card-body">
           
-          <div id="imgPreviewWrap" style="<?php echo e(isset($category) && $category->image ? '' : 'display:none'); ?>;margin-bottom:16px">
+          <div id="imgPreviewWrap" >
             <img id="imgPreview"
               src="<?php echo e(isset($category) && $category->image ? asset('storage/'.$category->image) : ''); ?>"
               alt="Preview"

@@ -1,134 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-<title>Shop — GroceryMart</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#f8f9fa;color:#1a1a2e}
-a{text-decoration:none;color:inherit}
-:root{--green:#16a34a;--green-dark:#15803d;--green-light:#dcfce7;--border:#e2e8f0}
+<?php $__env->startSection('title', 'Shop'); ?>
 
-/* NAVBAR */
-.navbar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.nav-inner{max-width:1280px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;gap:16px}
-.logo{font-size:20px;font-weight:800;color:#1a1a2e;flex-shrink:0}.logo span{color:var(--green)}
-.search-wrap{flex:1;display:flex;border:1.5px solid var(--border);border-radius:50px;overflow:hidden;max-width:500px;transition:border-color .2s}
-.search-wrap:focus-within{border-color:var(--green)}
-.search-wrap input{flex:1;border:none;padding:9px 16px;font-size:13px;outline:none;font-family:inherit}
-.search-wrap button{background:var(--green);border:none;color:#fff;padding:0 20px;font-size:13px;font-weight:500;cursor:pointer}
-.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto}
-.nav-link{font-size:13px;font-weight:500;color:#374151;padding:7px 12px;border-radius:7px;transition:all .15s}
-.nav-link:hover{background:var(--green-light);color:var(--green)}
-.btn-cart{background:var(--green);color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
-.cart-badge{background:rgba(255,255,255,.25);border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700}
-.alert{padding:10px 20px;font-size:13px}
-.alert-success{background:#dcfce7;color:#15803d;border-bottom:1px solid #bbf7d0}
+<?php $__env->startSection('content'); ?>
 
-/* BREADCRUMB */
-.breadcrumb{background:#fff;border-bottom:1px solid var(--border);padding:10px 0}
-.bc-inner{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:6px;font-size:13px;color:#9ca3af}
-.bc-inner a{color:#16a34a;font-weight:500}.bc-inner span{color:#d1d5db}
-
-/* LAYOUT */
-.wrap{max-width:1280px;margin:0 auto;padding:24px 20px}
-.shop-layout{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}
-
-/* SIDEBAR */
-.sidebar{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:80px}
-.sidebar-section{padding:18px 20px;border-bottom:1px solid #f1f5f9}
-.sidebar-section:last-child{border-bottom:none}
-.sidebar-title{font-size:13px;font-weight:700;color:#374151;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.cat-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:7px;font-size:13px;color:#4b5563;cursor:pointer;transition:all .15s;text-decoration:none;margin-bottom:2px}
-.cat-item:hover,.cat-item.active{background:var(--green-light);color:var(--green);font-weight:600}
-.cat-count{background:#f1f5f9;color:#9ca3af;font-size:11px;padding:1px 7px;border-radius:10px;font-weight:600}
-.cat-item.active .cat-count{background:var(--green);color:#fff}
-.price-range{display:flex;gap:8px;align-items:center}
-.price-input{width:80px;padding:7px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;outline:none;font-family:inherit}
-.price-input:focus{border-color:var(--green)}
-.filter-btn{width:100%;background:var(--green);color:#fff;border:none;padding:9px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;font-family:inherit;transition:background .15s}
-.filter-btn:hover{background:var(--green-dark)}
-.clear-btn{width:100%;background:#f1f5f9;color:#64748b;border:none;padding:8px;border-radius:8px;font-size:13px;cursor:pointer;margin-top:6px;font-family:inherit;transition:background .15s}
-.clear-btn:hover{background:#e2e8f0}
-
-/* TOP BAR */
-.topbar-shop{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px}
-.results-info{font-size:13.5px;color:#64748b}
-.results-info strong{color:#1a1a2e}
-.sort-select{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;font-family:inherit;cursor:pointer;background:#fff;color:#374151;transition:border-color .2s}
-.sort-select:focus{border-color:var(--green)}
-
-/* PRODUCT GRID */
-.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.prod-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;transition:all .2s;position:relative}
-.prod-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.10);border-color:#bbf7d0}
-.prod-badge{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:5px;z-index:2}
-.badge-sale{background:#ef4444;color:#fff}
-.badge-new{background:var(--green);color:#fff}
-.badge-hot{background:#f97316;color:#fff}
-.out-badge{background:#94a3b8;color:#fff}
-.prod-img{height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .3s;font-size:70px}
-.prod-img img{width:100%;height:100%;object-fit:cover}
-.prod-card:hover .prod-img{transform:scale(1.05)}
-.prod-body{padding:13px}
-.prod-cat{font-size:11px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}
-.prod-name{font-size:13.5px;font-weight:600;color:#1a1a2e;line-height:1.35;margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.prod-weight{font-size:12px;color:#9ca3af;margin-bottom:8px}
-.prod-footer{display:flex;align-items:center;justify-content:space-between}
-.prod-price{font-size:18px;font-weight:800;color:var(--green)}
-.prod-old{font-size:12px;color:#9ca3af;text-decoration:line-through;margin-top:1px}
-.add-btn{width:34px;height:34px;background:var(--green);border:none;border-radius:8px;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
-.add-btn:hover{background:var(--green-dark);transform:scale(1.1)}
-.add-btn:disabled{background:#e2e8f0;color:#9ca3af;cursor:not-allowed;transform:none}
-
-/* EMPTY STATE */
-.empty{text-align:center;padding:64px 20px;grid-column:1/-1}
-.empty-icon{font-size:56px;margin-bottom:16px}
-.empty-title{font-size:18px;font-weight:600;color:#374151;margin-bottom:6px}
-.empty-sub{font-size:14px;color:#9ca3af}
-
-/* PAGINATION */
-.pagination-wrap{margin-top:28px;display:flex;justify-content:center}
-.pagination{display:flex;gap:4px}
-.page-item{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:#374151;background:#fff;text-decoration:none;transition:all .15s}
-.page-item:hover{border-color:var(--green);color:var(--green)}
-.page-item.active{background:var(--green);color:#fff;border-color:var(--green)}
-.page-item.disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
-
-/* RESPONSIVE */
-@media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:768px){.shop-layout{grid-template-columns:1fr}.sidebar{display:none}.products-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:480px){.products-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
-</style>
-</head>
-<body>
-<nav class="navbar">
-  <div class="nav-inner">
-    <a href="<?php echo e(route('home')); ?>" class="logo">Grocery<span>Mart</span></a>
-    <form action="<?php echo e(route('shop.search')); ?>" method="GET" class="search-wrap">
-      <input type="text" name="q" placeholder="Search products..." value="<?php echo e(request('q')); ?>">
-      <button type="submit">🔍</button>
-    </form>
-    <div class="nav-right">
-      <a href="<?php echo e(route('home')); ?>" class="nav-link">Home</a>
-      <a href="<?php echo e(route('offers')); ?>" class="nav-link">🔥 Offers</a>
-      <?php if(auth()->guard()->check()): ?>
-        <a href="<?php echo e(route('account.index')); ?>" class="nav-link">👤 Account</a>
-      <?php else: ?>
-        <a href="<?php echo e(route('login')); ?>" class="nav-link">Login</a>
-      <?php endif; ?>
-      <a href="<?php echo e(route('cart.index')); ?>" class="btn-cart">
-        🛒 Cart
-        <?php $c=count(session('cart',[]));?>
-        <?php if($c>0): ?><span class="cart-badge"><?php echo e($c); ?></span><?php endif; ?>
-      </a>
-    </div>
-  </div>
-</nav>
-
-<?php if(session('success')): ?><div class="alert alert-success">✅ <?php echo e(session('success')); ?></div><?php endif; ?>
 
 <div class="breadcrumb">
   <div class="bc-inner">
@@ -148,8 +21,6 @@ a{text-decoration:none;color:inherit}
     
     <aside class="sidebar">
       <form method="GET" action="<?php echo e(route('shop')); ?>" id="filterForm">
-
-        
         <div class="sidebar-section">
           <div class="sidebar-title">🗂️ Categories</div>
           <a href="<?php echo e(route('shop')); ?>" class="cat-item <?php echo e(!request('category') ? 'active' : ''); ?>">
@@ -165,8 +36,6 @@ a{text-decoration:none;color:inherit}
           </a>
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
-
-        
         <div class="sidebar-section">
           <div class="sidebar-title">💰 Price Range</div>
           <div class="price-range">
@@ -179,20 +48,13 @@ a{text-decoration:none;color:inherit}
           <button type="submit" class="filter-btn">Apply Filter</button>
           <a href="<?php echo e(route('shop')); ?>" class="clear-btn" style="display:block;text-align:center">Clear All</a>
         </div>
-
-        
         <div class="sidebar-section">
           <div class="sidebar-title">📦 Availability</div>
           <a href="<?php echo e(route('shop')); ?>?<?php echo e(http_build_query(array_merge(request()->except(['stock','page']), ['stock'=>'instock']))); ?>"
-            class="cat-item <?php echo e(request('stock')==='instock' ? 'active' : ''); ?>">
-            ✅ In Stock Only
-          </a>
+            class="cat-item <?php echo e(request('stock')==='instock' ? 'active' : ''); ?>">✅ In Stock Only</a>
           <a href="<?php echo e(route('shop')); ?>?<?php echo e(http_build_query(array_merge(request()->except(['stock','page']), ['stock'=>'sale']))); ?>"
-            class="cat-item <?php echo e(request('stock')==='sale' ? 'active' : ''); ?>">
-            🏷️ On Sale
-          </a>
+            class="cat-item <?php echo e(request('stock')==='sale' ? 'active' : ''); ?>">🏷️ On Sale</a>
         </div>
-
       </form>
     </aside>
 
@@ -201,7 +63,6 @@ a{text-decoration:none;color:inherit}
       <div class="topbar-shop">
         <div class="results-info">
           Showing <strong><?php echo e($products->count()); ?></strong> of <strong><?php echo e($products->total()); ?></strong> products
-          <?php if(request('q')): ?><span> for "<strong><?php echo e(request('q')); ?></strong>"</span><?php endif; ?>
         </div>
         <select class="sort-select" onchange="window.location='<?php echo e(route('shop')); ?>?'+new URLSearchParams({...Object.fromEntries(new URLSearchParams(location.search)),...{sort:this.value}}).toString()">
           <option value="" <?php echo e(!request('sort') ? 'selected':''); ?>>Latest First</option>
@@ -224,7 +85,6 @@ a{text-decoration:none;color:inherit}
           <?php elseif($product->is_bestseller): ?>
             <div class="prod-badge badge-hot">BEST</div>
           <?php endif; ?>
-
           <a href="<?php echo e(route('product.show', $product->slug)); ?>">
             <div class="prod-img">
               <?php if($product->thumbnail): ?>
@@ -235,7 +95,6 @@ a{text-decoration:none;color:inherit}
               <?php endif; ?>
             </div>
           </a>
-
           <div class="prod-body">
             <div class="prod-cat"><?php echo e($product->category->name ?? ''); ?></div>
             <a href="<?php echo e(route('product.show', $product->slug)); ?>" style="text-decoration:none">
@@ -254,10 +113,10 @@ a{text-decoration:none;color:inherit}
                   <?php echo csrf_field(); ?>
                   <input type="hidden" name="product_id" value="<?php echo e($product->id); ?>">
                   <input type="hidden" name="qty" value="1">
-                  <button type="submit" class="add-btn" title="Add to cart">+</button>
+                  <button type="submit" class="add-btn">+</button>
                 </form>
               <?php else: ?>
-                <button class="add-btn" disabled title="Out of stock">✕</button>
+                <button class="add-btn" disabled>✕</button>
               <?php endif; ?>
             </div>
           </div>
@@ -272,7 +131,6 @@ a{text-decoration:none;color:inherit}
         <?php endif; ?>
       </div>
 
-      
       <?php if($products->hasPages()): ?>
       <div class="pagination-wrap">
         <div class="pagination">
@@ -293,12 +151,57 @@ a{text-decoration:none;color:inherit}
       </div>
       <?php endif; ?>
     </div>
+
   </div>
 </div>
 
 
-<div style="background:#0f1c14;color:rgba(255,255,255,.6);text-align:center;padding:24px;font-size:13px;margin-top:44px">
-  © <?php echo e(date('Y')); ?> GroceryMart — <a href="<?php echo e(route('home')); ?>" style="color:#4ade80">Back to Home</a>
-</div>
-</body>
-</html><?php /**PATH C:\xampp\htdocs\grocery-mart-final\resources\views/frontend/shop.blade.php ENDPATH**/ ?>
+<?php $__env->startPush('styles'); ?>
+<style>
+:root{--green:#16a34a;--green-dark:#15803d;--green-light:#dcfce7;--border:#e2e8f0}
+.breadcrumb{background:#fff;border-bottom:1px solid var(--border);padding:10px 0}
+.bc-inner{max-width:1280px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:6px;font-size:13px;color:#9ca3af}
+.bc-inner a{color:#16a34a;font-weight:500}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 20px}
+.shop-layout{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}
+.sidebar{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:80px}
+.sidebar-section{padding:18px 20px;border-bottom:1px solid #f1f5f9}
+.sidebar-title{font-size:13px;font-weight:700;color:#374151;margin-bottom:14px}
+.cat-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:7px;font-size:13px;color:#4b5563;transition:all .15s;text-decoration:none;margin-bottom:2px}
+.cat-item:hover,.cat-item.active{background:var(--green-light);color:var(--green);font-weight:600}
+.cat-count{background:#f1f5f9;color:#9ca3af;font-size:11px;padding:1px 7px;border-radius:10px;font-weight:600}
+.price-range{display:flex;gap:8px;align-items:center}
+.price-input{width:80px;padding:7px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;outline:none}
+.filter-btn{width:100%;background:var(--green);color:#fff;border:none;padding:9px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px}
+.clear-btn{width:100%;background:#f1f5f9;color:#64748b;border:none;padding:8px;border-radius:8px;font-size:13px;cursor:pointer;margin-top:6px}
+.topbar-shop{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.results-info{font-size:13.5px;color:#64748b}
+.sort-select{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;background:#fff}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.prod-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;transition:all .2s;position:relative}
+.prod-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.10)}
+.prod-badge{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:5px;z-index:2}
+.badge-sale{background:#ef4444;color:#fff}.badge-new{background:var(--green);color:#fff}.badge-hot{background:#f97316;color:#fff}.out-badge{background:#94a3b8;color:#fff}
+.prod-img{height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:70px}
+.prod-img img{width:100%;height:100%;object-fit:cover}
+.prod-body{padding:13px}
+.prod-cat{font-size:11px;color:var(--green);font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.prod-name{font-size:13.5px;font-weight:600;color:#1a1a2e;line-height:1.35;margin-bottom:3px}
+.prod-weight{font-size:12px;color:#9ca3af;margin-bottom:8px}
+.prod-footer{display:flex;align-items:center;justify-content:space-between}
+.prod-price{font-size:18px;font-weight:800;color:var(--green)}
+.prod-old{font-size:12px;color:#9ca3af;text-decoration:line-through}
+.add-btn{width:34px;height:34px;background:var(--green);border:none;border-radius:8px;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.add-btn:disabled{background:#e2e8f0;color:#9ca3af;cursor:not-allowed}
+.empty{text-align:center;padding:64px 20px;grid-column:1/-1}
+.pagination-wrap{margin-top:28px;display:flex;justify-content:center}
+.pagination{display:flex;gap:4px}
+.page-item{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;border:1.5px solid var(--border);color:#374151;background:#fff;text-decoration:none;transition:all .15s}
+.page-item.active{background:var(--green);color:#fff;border-color:var(--green)}
+.page-item.disabled{opacity:.45;pointer-events:none}
+@media(max-width:768px){.shop-layout{grid-template-columns:1fr}.sidebar{display:none}.products-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('frontend.layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\grocery-mart-final\resources\views/frontend/shop.blade.php ENDPATH**/ ?>

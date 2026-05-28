@@ -135,6 +135,40 @@ class ProductController extends Controller
             ->get();
         $allCategories = Category::active()->get();
 
-        return view('frontend.product', compact('product', 'related', 'allCategories'));
+        return view('frontend.product-detail', compact('product', 'related', 'allCategories'));
     }
+
+    public function index(Request $request)
+{
+    $allCategories = Category::active()->get();
+    $categories = Category::active()->withCount(['activeProducts'])->get(); // ← YEH ADD KARO
+
+    $query = Product::active()->with(['category', 'approvedReviews']);
+
+    // Category filter
+    if ($request->filled('category')) {
+        $query->where('category_id', $request->category);
+    }
+
+    // Price filter
+    if ($request->filled('min_price')) {
+        $query->where('price', '>=', $request->min_price);
+    }
+    if ($request->filled('max_price')) {
+        $query->where('price', '<=', $request->max_price);
+    }
+
+    // Sort
+    switch ($request->get('sort')) {
+        case 'price_asc':  $query->orderByRaw('COALESCE(sale_price, price) ASC'); break;
+        case 'price_desc': $query->orderByRaw('COALESCE(sale_price, price) DESC'); break;
+        case 'bestseller': $query->where('is_bestseller', true)->latest(); break;
+        case 'newest':     $query->latest(); break;
+        default:           $query->latest(); break;
+    }
+
+    $products = $query->paginate(16)->withQueryString();
+
+    return view('frontend.shop', compact('products', 'categories', 'allCategories')); // ← categories pass karo
+}
 }

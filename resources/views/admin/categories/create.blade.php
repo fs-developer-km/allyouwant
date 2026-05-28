@@ -109,7 +109,7 @@
         <div class="card-header"><div class="card-title">🖼️ Category Image</div></div>
         <div class="card-body">
           {{-- Preview --}}
-          <div id="imgPreviewWrap" style="{{ isset($category) && $category->image ? '' : 'display:none' }};margin-bottom:16px">
+          <div id="imgPreviewWrap" >
             <img id="imgPreview"
               src="{{ isset($category) && $category->image ? asset('storage/'.$category->image) : '' }}"
               alt="Preview"
