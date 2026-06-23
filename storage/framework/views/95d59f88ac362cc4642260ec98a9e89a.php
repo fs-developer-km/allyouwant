@@ -137,6 +137,7 @@ button{cursor:pointer;font-family:inherit}
 .sec-title span{color:#0d6e39}
 .sec-sub{font-size:13px;color:#6b7280;margin-top:3px}
 .sec-view-all{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:#0d6e39;transition:gap .15s;text-decoration:none}
+
 .sec-view-all:hover{gap:8px}
 .tabs{display:flex;gap:6px;margin-bottom:20px;border-bottom:1.5px solid #e8edf0;padding-bottom:0}
 .tab-btn{padding:8px 18px;border-radius:8px 8px 0 0;border:none;background:none;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;transition:all .15s;border-bottom:2.5px solid transparent;margin-bottom:-1.5px}
@@ -144,8 +145,25 @@ button{cursor:pointer;font-family:inherit}
 
 /* CATEGORIES */
 .cat-scroll{display:grid;grid-template-columns:repeat(10,1fr);gap:12px}
-.cat-box{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px;background:#fff;border:1.5px solid #e8edf0;border-radius:12px;cursor:pointer;transition:all .2s;text-decoration:none;color:inherit}
-.cat-box:hover{border-color:#0d6e39;background:#f0faf4;transform:translateY(-3px);box-shadow:0 6px 20px rgba(13,110,57,.10)}
+.cat-box{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  padding:16px 8px;
+  /* background:#fff; */
+  /* border:1.5px solid #e8edf0; */
+  /* border-radius:12px; */
+  cursor:pointer;
+  transition:all .2s;
+  text-decoration:none;
+  color:inherit
+}
+/* .cat-box:hover{border-color:#0d6e39;background:#f0faf4;transform:translateY(-3px);box-shadow:0 6px 20px rgba(13,110,57,.10)
+} */
+.cat-box:hover{    border: 1px solid #0D6E39;
+    border-radius: 15px;
+}
 .cat-box-icon{width:52px;height:52px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:24px;transition:background .2s;overflow:hidden}
 .cat-box:hover .cat-box-icon{background:#0d6e39}
 .cat-box-icon img{width:100%;height:100%;object-fit:cover}
@@ -162,8 +180,8 @@ button{cursor:pointer;font-family:inherit}
 .badge-hot{background:#ff6b00;color:#fff}
 .prod-wish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:#fff;border:1px solid #e8edf0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.08);transition:all .15s;cursor:pointer}
 .prod-wish:hover{background:#fff0f0;border-color:#fca5a5}
-.prod-img-wrap{height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .3s}
-.prod-img-wrap img{width:100%;height:100%;object-fit:cover}
+.prod-img-wrap{height:160px;background:#ffff;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .3s}
+.prod-img-wrap img{width:100%;height:100%;object-fit:contain}
 .prod-card:hover .prod-img-wrap{transform:scale(1.05)}
 .prod-emoji{font-size:72px;line-height:1}
 .prod-body{padding:12px}
@@ -432,8 +450,7 @@ footer{background:#0f1c14;color:rgba(255,255,255,.7);padding:52px 0 0}
         <div class="logo-text">All You <span>Want</span></div>
         <span class="logo-sub">Fresh • Fast • Reliable</span>
     </div> -->
-
-</a>
+   </a>
     <div class="search-wrap">
       <form action="<?php echo e(route('shop.search')); ?>" method="GET" class="search-box">
         <select class="search-cat" name="category">

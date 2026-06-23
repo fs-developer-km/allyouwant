@@ -1,0 +1,1 @@
+<?php /**PATH C:\xampp\htdocs\grocery-mart-final\resources\views\admin\layouts\app.blade.php ENDPATH**/ ?>

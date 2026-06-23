@@ -2,6 +2,60 @@
 
 <?php $__env->startSection('content'); ?>
 
+<?php $__env->startSection('content'); ?>
+
+
+<div class="location-bar" id="locationBar">
+  <div class="location-bar-inner">
+    <div class="loc-left" onclick="openLocationModal()">
+      <div class="loc-icon">📍</div>
+      <div class="loc-text">
+        <div class="loc-label" id="locLabel">Detect your location</div>
+        <div class="loc-sub" id="locSub">Tap to check delivery availability</div>
+      </div>
+    </div>
+    <button type="button" class="loc-change-btn" onclick="openLocationModal()">Change</button>
+  </div>
+</div>
+
+
+<div id="locationModal" class="loc-modal-overlay" onclick="if(event.target===this) closeLocationModal()">
+  <div class="loc-modal">
+    <div class="loc-modal-header">
+      <div class="loc-modal-title">📍 Set Delivery Location</div>
+      <button class="loc-modal-close" onclick="closeLocationModal()">×</button>
+    </div>
+    <div class="loc-modal-body">
+
+      <button type="button" class="loc-detect-btn" id="locDetectBtn" onclick="detectCurrentLocation()">
+        <span class="loc-detect-icon">📡</span>
+        <span>Use my current location</span>
+      </button>
+
+      <div class="loc-divider"><span>OR</span></div>
+
+      <div class="loc-pincode-row">
+        <input type="text" id="locPincodeInput" class="loc-pincode-input" placeholder="Enter pincode (e.g. 110091)" maxlength="6" inputmode="numeric">
+        <button type="button" class="loc-pincode-btn" onclick="checkPincodeHome()">Check</button>
+      </div>
+
+      <div id="locResultBox" class="loc-result-box" style="display:none">
+        <div class="loc-result-icon" id="locResultIcon">✅</div>
+        <div class="loc-result-text">
+          <div class="loc-result-title" id="locResultTitle"></div>
+          <div class="loc-result-sub" id="locResultSub"></div>
+        </div>
+      </div>
+
+      <div class="loc-area-note">
+        🏠 We currently deliver within <strong>10km</strong> of <strong>Mayur Vihar Phase-1, Delhi</strong>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 
 <div class="page-wrap">
   <div class="hero-section">
@@ -9,7 +63,7 @@
 
       
       <div class="sidebar-cats">
-        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $categories->take(8); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php
           $icons = ['Vegetables'=>'🥬','Fruits'=>'🍎','Dairy & Eggs'=>'🥛','Meat & Fish'=>'🍗','Bakery'=>'🧁','Beverages'=>'🧃','Instant Food'=>'🍜','Personal Care'=>'🧴','Household'=>'🏠','Pet Care'=>'🐾'];
           $icon = $icons[$cat->name] ?? '🛒';
@@ -17,7 +71,7 @@
         ?>
         <a href="<?php echo e(route('category.show', $cat->slug)); ?>" class="sidebar-cat-item">
           <div class="sidebar-cat-left">
-            <div class="sidebar-cat-icon" style="background:<?php echo e($bg); ?>">
+            <div class="sidebar-cat-icon" >
               <?php if($cat->image): ?>
                 <img src="<?php echo e(asset('storage/'.$cat->image)); ?>" alt="<?php echo e($cat->name); ?>" style="width:100%;height:100%;object-fit:cover;border-radius:6px">
               <?php else: ?>
@@ -47,7 +101,8 @@
             <div><div class="slide-stat-n"><?php echo e($featured->count() + $bestsellers->count()); ?>+</div><div class="slide-stat-l">Fresh Products</div></div>
             <div><div class="slide-stat-n">60 min</div><div class="slide-stat-l">Express Delivery</div></div>
           </div>
-          <div class="slide-img">🥗</div>
+          
+          <img class="slide-img" src="<?php echo e(asset('assets/images/second bucket.png')); ?>" alt="Bucket" style="height: 280px; width:280px">
         </div>
         <div class="slide slide-2" id="slide1">
           <div class="slide-eyebrow">🔥 Today's Special Deal</div>
@@ -148,7 +203,10 @@
         <div class="sec-title">Shop by <span>Category</span></div>
         <div class="sec-sub">Browse from <?php echo e($categories->count()); ?>+ product categories</div>
       </div>
-      <a href="<?php echo e(route('shop')); ?>" class="sec-view-all">View All Categories →</a>
+      
+      <a href="<?php echo e(route('categories.all')); ?>" class="sec-view-all">
+    View All Categories →
+</a>
     </div>
 
     <div class="cat-scroll">
@@ -381,11 +439,207 @@
 
 <?php $__env->startPush('styles'); ?>
 <style>
+
+/* ── LOCATION BAR ── */
+.location-bar {
+  background: #ffffff;
+  border-bottom: 1px solid #e4e9f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.location-bar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.loc-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+}
+.loc-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.loc-text { min-width: 0; }
+.loc-label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1a202c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.loc-sub {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.location-bar.serviceable .loc-icon { color: #0d6e39; }
+.location-bar.serviceable .loc-sub { color: #0d6e39; font-weight: 700; }
+.location-bar.unserviceable .loc-sub { color: #ef4444; font-weight: 700; }
+
+.loc-change-btn {
+  background: #e6f4ec;
+  color: #0d6e39;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: 'Nunito', sans-serif;
+  transition: background .2s;
+}
+.loc-change-btn:hover { background: #d4ecdf; }
+
+/* ── LOCATION MODAL ── */
+.loc-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.loc-modal-overlay.active { display: flex; }
+.loc-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+  animation: locFadeIn .25s ease;
+}
+@keyframes locFadeIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+.loc-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e4e9f0;
+}
+.loc-modal-title { font-size: 16px; font-weight: 800; color: #1a202c; }
+.loc-modal-close {
+  background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; line-height: 1;
+}
+.loc-modal-body { padding: 20px; }
+
+.loc-detect-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0d6e39, #095c2f);
+  color: #fff;
+  border: none;
+  padding: 14px 18px;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  transition: transform .2s, box-shadow .2s;
+}
+.loc-detect-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(13,110,57,.3); }
+.loc-detect-btn:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+.loc-detect-icon { font-size: 18px; }
+
+.loc-divider {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  margin: 16px 0;
+  position: relative;
+}
+.loc-divider::before, .loc-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #e4e9f0;
+}
+.loc-divider::before { left: 0; }
+.loc-divider::after { right: 0; }
+
+.loc-pincode-row { display: flex; gap: 8px; }
+.loc-pincode-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1.5px solid #e4e9f0;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  outline: none;
+}
+.loc-pincode-input:focus { border-color: #0d6e39; box-shadow: 0 0 0 3px rgba(13,110,57,.1); }
+.loc-pincode-btn {
+  background: #1a202c;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+}
+
+.loc-result-box {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #c6e9d5;
+  background: #f0faf4;
+}
+.loc-result-box.error { background: #fef2f2; border-color: #fecaca; }
+.loc-result-icon { font-size: 24px; flex-shrink: 0; }
+.loc-result-title { font-size: 13px; font-weight: 800; color: #15803d; }
+.loc-result-box.error .loc-result-title { color: #ef4444; }
+.loc-result-sub { font-size: 11px; color: #64748b; font-weight: 600; margin-top: 2px; }
+
+.loc-area-note {
+  margin-top: 16px;
+  font-size: 11px;
+  color: #94a3b8;
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.loc-area-note strong { color: #0d6e39; }
+
+@media (max-width: 600px) {
+  .location-bar-inner { padding: 8px 14px; }
+  .loc-label { font-size: 12px; }
+  .loc-sub { font-size: 10px; }
+}
+
 /* Category cards — proper image support */
 .cat-box-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
+  width: 100%;
+  height: auto;
+  border-radius: 10%;
   background: #f3f4f6;
   display: flex;
   align-items: center;
@@ -395,10 +649,10 @@
   flex-shrink: 0;
 }
 .cat-box-icon img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 10%;
   display: block;
 }
 .cat-box:hover .cat-box-icon {
@@ -417,6 +671,139 @@
 
 <?php $__env->startPush('scripts'); ?>
 <script>
+
+// ══════════════════════════════════
+// LOCATION BAR LOGIC (Blinkit-style)
+// ══════════════════════════════════
+const LOC_STORAGE_KEY = 'gm_delivery_location';
+
+function openLocationModal() {
+  document.getElementById('locationModal').classList.add('active');
+}
+function closeLocationModal() {
+  document.getElementById('locationModal').classList.remove('active');
+}
+
+function setLocationBarUI(status, label, sub) {
+  const bar = document.getElementById('locationBar');
+  const lbl = document.getElementById('locLabel');
+  const subEl = document.getElementById('locSub');
+  bar.classList.remove('serviceable', 'unserviceable');
+  if (status) bar.classList.add(status);
+  lbl.textContent = label;
+  subEl.textContent = sub;
+}
+
+function showLocResult(success, title, sub) {
+  const box = document.getElementById('locResultBox');
+  const icon = document.getElementById('locResultIcon');
+  const t = document.getElementById('locResultTitle');
+  const s = document.getElementById('locResultSub');
+  box.style.display = 'flex';
+  box.classList.toggle('error', !success);
+  icon.textContent = success ? '✅' : '❌';
+  t.textContent = title;
+  s.textContent = sub || '';
+}
+
+function sendDeliveryCheck(payload, onResult) {
+  fetch("<?php echo e(route('delivery.check')); ?>", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(data => onResult(data))
+  .catch(() => onResult({ serviceable: false, message: '⚠️ Could not check delivery area', sub: 'Please try again' }));
+}
+
+function detectCurrentLocation() {
+  const btn = document.getElementById('locDetectBtn');
+  if (!navigator.geolocation) {
+    showLocResult(false, 'Geolocation not supported', 'Please enter your pincode instead');
+    return;
+  }
+  btn.disabled = true;
+  btn.querySelector('span:last-child').textContent = 'Detecting...';
+
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    sendDeliveryCheck({ lat: pos.coords.latitude, lng: pos.coords.longitude }, function(data) {
+      btn.disabled = false;
+      btn.querySelector('span:last-child').textContent = 'Use my current location';
+      handleLocationResult(data, 'gps');
+    });
+  }, function() {
+    btn.disabled = false;
+    btn.querySelector('span:last-child').textContent = 'Use my current location';
+    showLocResult(false, 'Location permission denied', 'Please enter your pincode below');
+  });
+}
+
+function checkPincodeHome() {
+  const val = document.getElementById('locPincodeInput').value.trim();
+  if (!/^\d{6}$/.test(val)) {
+    showLocResult(false, 'Invalid pincode', 'Enter a valid 6-digit pincode');
+    return;
+  }
+  sendDeliveryCheck({ pincode: val }, function(data) {
+    handleLocationResult(data, 'pincode', val);
+  });
+}
+
+function handleLocationResult(data, source, pincode) {
+  if (data.serviceable) {
+    showLocResult(true, data.message, data.sub);
+    const label = data.area ? `Delivering to ${data.area}` : 'Delivery available!';
+    setLocationBarUI('serviceable', label, `~${data.km}km away · ${data.charge == 0 ? 'FREE delivery' : '₹' + data.charge + ' delivery fee'}`);
+
+    // Save to localStorage for persistence across pages
+    localStorage.setItem(LOC_STORAGE_KEY, JSON.stringify({
+      serviceable: true,
+      area: data.area,
+      km: data.km,
+      charge: data.charge,
+      pincode: pincode || '',
+      source: source,
+      ts: Date.now()
+    }));
+
+    setTimeout(closeLocationModal, 1200);
+  } else {
+    showLocResult(false, data.message, data.sub);
+    setLocationBarUI('unserviceable', 'Delivery not available here', data.message);
+
+    localStorage.setItem(LOC_STORAGE_KEY, JSON.stringify({
+      serviceable: false,
+      ts: Date.now()
+    }));
+  }
+}
+
+// On page load — restore saved location
+document.addEventListener('DOMContentLoaded', function() {
+  const saved = localStorage.getItem(LOC_STORAGE_KEY);
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      // Re-validate if older than 1 hour
+      const isStale = (Date.now() - (data.ts || 0)) > 60 * 60 * 1000;
+      if (!isStale) {
+        if (data.serviceable) {
+          const label = data.area ? `Delivering to ${data.area}` : 'Delivery available!';
+          setLocationBarUI('serviceable', label, `~${data.km}km away · ${data.charge == 0 ? 'FREE delivery' : '₹' + data.charge + ' delivery fee'}`);
+        } else {
+          setLocationBarUI('unserviceable', 'Delivery not available here', 'Tap to check another location');
+        }
+        return;
+      }
+    } catch(e) {}
+  }
+  setLocationBarUI('', 'Detect your location', 'Tap to check delivery availability');
+});
+
 // Slider
 let cur=0;
 const slides=document.querySelectorAll('.slide');

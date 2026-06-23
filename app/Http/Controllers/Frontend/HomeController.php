@@ -11,9 +11,10 @@ class HomeController extends Controller
     {
         $banners    = Banner::active()->get();
         $categories = Category::active()->homepage()->ordered()->get();
-        $featured   = Product::active()->featured()->inStock()->with('category')->take(10)->get();
+        $featured   = Product::active()->featured()->inStock()->with('category')->take(12)->get();
         $bestsellers= Product::active()->bestseller()->inStock()->with('category')->take(10)->get();
         $newArrivals= Product::active()->newArrival()->inStock()->with('category')->take(6)->get();
         return view('frontend.home', compact('banners','categories','featured','bestsellers','newArrivals'));
     }
 }
+

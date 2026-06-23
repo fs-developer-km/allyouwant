@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\AuthController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\OrderController as FrontOrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController   as AdminCategoryController;
@@ -20,19 +21,27 @@ use App\Http\Controllers\Admin\InventoryController  as AdminInventoryController;
 
 Route::get('/',        [HomeController::class, 'index'])->name('home');
 Route::get('/shop',    [ProductController::class, 'index'])->name('shop');
+Route::get('/all-categories', [ProductController::class, 'allCategories'])->name('categories.all');
 Route::get('/offers',  [ProductController::class, 'offers'])->name('offers');
 Route::get('/category/{slug}', [ProductController::class, 'category'])->name('category.show');
 Route::get('/product/{slug}',  [ProductController::class, 'show'])->name('product.show');
 Route::get('/search',          [ProductController::class, 'search'])->name('shop.search');
 
+
+
 // Cart
 Route::prefix('cart')->name('cart.')->group(function () {
-    Route::get('/',             [CartController::class, 'index'])->name('index');
-    Route::post('/add',         [CartController::class, 'add'])->name('add');
-    Route::patch('/update/{id}',[CartController::class, 'update'])->name('update');
+    Route::get('/',              [CartController::class, 'index'])->name('index');
+    Route::post('/add',          [CartController::class, 'add'])->name('add');
+    Route::patch('/update/{id}', [CartController::class, 'update'])->name('update');
     Route::delete('/remove/{id}',[CartController::class, 'remove'])->name('remove');
-    Route::post('/coupon',      [CartController::class, 'applyCoupon'])->name('coupon.apply');
+    Route::post('/coupon',       [CartController::class, 'applyCoupon'])->name('coupon.apply');
+    Route::delete('/clear',      [CartController::class, 'clear'])->name('clear');  // ← ADD
 });
+
+Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+// ya
+Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 
 // Auth
 Route::middleware('guest')->group(function () {
@@ -54,6 +63,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout',           [CartController::class, 'checkout'])->name('checkout.index');
     Route::post('/checkout/place',    [CartController::class, 'placeOrder'])->name('checkout.place');
     Route::get('/checkout/success/{order}', [CartController::class, 'success'])->name('checkout.success');
+});
+
+
+
+// Public AJAX - location/pincode check (login required nahi, kyunki user checkout pe jaane se pehle bhi check kar sakta hai)
+Route::post('/check-delivery-area', [CheckoutController::class, 'checkDeliveryArea'])->name('delivery.check');
+
+// Customer area (auth needed) — ye block already hai, isme replace karo
+Route::middleware('auth')->group(function () {
+    Route::get('/my-account',         [AuthController::class, 'dashboard'])->name('account.index');
+    Route::get('/my-account/orders',  [FrontOrderController::class, 'index'])->name('order.index');
+    Route::get('/my-account/orders/{id}', [FrontOrderController::class, 'show'])->name('order.show');
+
+    Route::get('/checkout',           [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/place',    [CheckoutController::class, 'placeOrder'])->name('checkout.place');
+    Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
 
 // ══════════════════════════════════════

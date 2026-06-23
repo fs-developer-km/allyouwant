@@ -316,7 +316,14 @@ unset($__errorArgs, $__bag); ?>
             class="btn btn-secondary" style="width:100%;justify-content:center">
             Cancel
           </a>
-          <?php if(isset($product)): ?>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+    <?php if(isset($product)): ?>
           <form action="<?php echo e(route('admin.products.destroy', $product->id)); ?>"
             method="POST" onsubmit="return confirmDelete(this)">
             <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
@@ -325,11 +332,6 @@ unset($__errorArgs, $__bag); ?>
             </button>
           </form>
           <?php endif; ?>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>

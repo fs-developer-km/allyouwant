@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['order_number','user_id','address_id','delivery_name','delivery_phone','delivery_address','delivery_city','delivery_state','delivery_pincode','subtotal','delivery_charge','discount','tax','total','coupon_code','payment_method','payment_status','payment_id','status','notes','delivered_at'];
+protected $fillable = ['order_number','user_id','address_id','delivery_name','delivery_phone','delivery_address','delivery_city','delivery_state','delivery_pincode','delivery_km','subtotal','delivery_charge','discount','tax','total','coupon_code','payment_method','payment_status','payment_id','status','notes','delivered_at'];
     protected $casts    = ['subtotal'=>'decimal:2','delivery_charge'=>'decimal:2','discount'=>'decimal:2','tax'=>'decimal:2','total'=>'decimal:2','delivered_at'=>'datetime'];
 
     public static $statusColors = ['pending'=>'warning','confirmed'=>'info','processing'=>'primary','shipped'=>'secondary','out_for_delivery'=>'info','delivered'=>'success','cancelled'=>'danger','refunded'=>'dark'];

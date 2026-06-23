@@ -24,6 +24,19 @@ class ProductController extends Controller
         return view('frontend.home', compact('categories', 'featured', 'bestsellers'));
     }
 
+
+        // ── All Categories Page ──────────────────────────────────
+    public function allCategories()
+    {
+        $categories = Category::active()
+            ->withCount(['activeProducts'])
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return view('frontend.all-categories', compact('categories'));
+    }
+
     /**
      * Category page — FIX: pass $allCategories for navbar/sidebar
      */
@@ -172,3 +185,6 @@ class ProductController extends Controller
     return view('frontend.shop', compact('products', 'categories', 'allCategories')); // ← categories pass karo
 }
 }
+
+
+

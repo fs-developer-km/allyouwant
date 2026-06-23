@@ -278,7 +278,22 @@
             class="btn btn-secondary" style="width:100%;justify-content:center">
             Cancel
           </a>
-          @if(isset($product))
+          {{-- @if(isset($product))
+          <form action="{{ route('admin.products.destroy', $product->id) }}"
+            method="POST" onsubmit="return confirmDelete(this)">
+            @csrf @method('DELETE')
+            <button type="submit" class="btn btn-danger" style="width:100%;justify-content:center">
+              🗑️ Delete Product
+            </button>
+          </form>
+          @endif --}}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+    @if(isset($product))
           <form action="{{ route('admin.products.destroy', $product->id) }}"
             method="POST" onsubmit="return confirmDelete(this)">
             @csrf @method('DELETE')
@@ -287,11 +302,6 @@
             </button>
           </form>
           @endif
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
 @endsection
 
 @push('scripts')

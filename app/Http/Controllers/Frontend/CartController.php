@@ -12,17 +12,27 @@ class CartController extends Controller
     private function getCart() { return session()->get('cart', []); }
     private function saveCart($cart) { session()->put('cart', $cart); }
 
-    public function index()
-    {
-        $cart     = $this->getCart();
-        $products = [];
-        $total    = 0;
-        foreach ($cart as $id => $qty) {
-            $p = Product::find($id);
-            if ($p) { $products[] = ['product'=>$p,'qty'=>$qty]; $total += $p->current_price * $qty; }
-        }
-        return view('frontend.cart', compact('products','total'));
+public function index()
+{
+    $cart     = $this->getCart();
+    $products = [];
+    $total    = 0;
+    $cartIds  = array_keys($cart);  // ← ADD THIS
+
+    foreach ($cart as $id => $qty) {
+        $p = Product::find($id);
+        if ($p) { $products[] = ['product'=>$p,'qty'=>$qty]; $total += $p->current_price * $qty; }
     }
+
+    // ← ADD THIS BLOCK
+    $related = Product::whereNotIn('id', $cartIds)->inRandomOrder()->take(6)->get();
+                      
+                    //   ->inRandomOrder()
+                    //   ->take(6)
+                    //   ->get();
+
+    return view('frontend.cart', compact('products','total','related')); // ← add 'related'
+}
 
     public function add(Request $request)
     {
@@ -34,14 +44,25 @@ class CartController extends Controller
         return back()->with('success','Product added to cart!');
     }
 
-    public function update(Request $request, $id)
-    {
-        $cart = $this->getCart();
-        if ($request->qty < 1) unset($cart[$id]);
-        else $cart[$id] = $request->qty;
-        $this->saveCart($cart);
-        return back()->with('success','Cart updated!');
+  public function update(Request $request, $id)
+{
+    $cart = $this->getCart();
+    if ($request->qty < 1) unset($cart[$id]);
+    else $cart[$id] = $request->qty;
+    $this->saveCart($cart);
+
+    // ← ADD THIS: AJAX ke liye JSON return karo
+    if ($request->expectsJson() || $request->ajax()) {
+        $p = Product::find($id);
+        return response()->json([
+            'success'    => true,
+            'message'    => 'Cart updated!',
+            'line_total' => $p ? $p->current_price * $request->qty : 0,
+        ]);
     }
+
+    return back()->with('success','Cart updated!');
+}
 
     public function remove($id)
     {
@@ -134,4 +155,10 @@ class CartController extends Controller
         $order = Order::with('items')->findOrFail($id);
         return view('frontend.order-success', compact('order'));
     }
+
+    public function clear()
+{
+    session()->forget('cart');
+    return back()->with('success', 'Cart cleared!');
+}
 }

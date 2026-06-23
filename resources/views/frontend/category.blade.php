@@ -115,8 +115,8 @@ a{text-decoration:none;color:inherit}
 .prod-wish{position:absolute;top:10px;right:10px;width:32px;height:32px;background:rgba(255,255,255,.92);border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;z-index:3;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .prod-wish:hover{background:#fff;border-color:#f43f5e;transform:scale(1.15)}
 .prod-wish.wishlisted{background:#fff0f3;border-color:#f43f5e}
-.prod-img{height:170px;background:linear-gradient(135deg,#f8fafc,#f1f5f9);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .4s ease;position:relative}
-.prod-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.prod-img{height:170px;background:linear-gradient(135deg,#fff,#fff);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:transform .4s ease;position:relative}
+.prod-img img{width:100%;height:100%;object-fit:contain;transition:transform .4s ease}
 .prod-card:hover .prod-img img,.prod-card:hover .prod-img{transform:scale(1.08)}
 .prod-emoji-icon{font-size:72px;line-height:1;transition:transform .4s ease}
 .prod-card:hover .prod-emoji-icon{transform:scale(1.12)}

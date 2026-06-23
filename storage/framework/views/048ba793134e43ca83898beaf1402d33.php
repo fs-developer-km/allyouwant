@@ -182,8 +182,8 @@
 .prod-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.10)}
 .prod-badge{position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:5px;z-index:2}
 .badge-sale{background:#ef4444;color:#fff}.badge-new{background:var(--green);color:#fff}.badge-hot{background:#f97316;color:#fff}.out-badge{background:#94a3b8;color:#fff}
-.prod-img{height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:70px}
-.prod-img img{width:100%;height:100%;object-fit:cover}
+.prod-img{height:160px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:70px}
+.prod-img img{width:100%;height:100%;object-fit:contain}
 .prod-body{padding:13px}
 .prod-cat{font-size:11px;color:var(--green);font-weight:600;text-transform:uppercase;margin-bottom:4px}
 .prod-name{font-size:13.5px;font-weight:600;color:#1a1a2e;line-height:1.35;margin-bottom:3px}
