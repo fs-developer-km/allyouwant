@@ -99,10 +99,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::delete('products/image/{id}',  [AdminProductController::class, 'deleteImage'])->name('products.image.delete');
 
     // Orders
-    Route::get('orders',          [AdminOrderController::class, 'index'])->name('orders.index');
-    Route::get('orders/{id}',     [AdminOrderController::class, 'show'])->name('orders.show');
-    Route::put('orders/{id}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
-    Route::get('orders/{id}/invoice',[AdminOrderController::class, 'invoice'])->name('orders.invoice');
+// Orders
+Route::get('orders',                [AdminOrderController::class, 'index'])->name('orders.index');
+Route::get('orders/{order}',        [AdminOrderController::class, 'show'])->name('orders.show');
+Route::put('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+Route::get('orders/{order}/invoice',[AdminOrderController::class, 'invoice'])->name('orders.invoice');
 
     // Banners
     Route::resource('banners', AdminBannerController::class);

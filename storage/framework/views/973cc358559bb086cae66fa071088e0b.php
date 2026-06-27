@@ -165,15 +165,7 @@ unset($__errorArgs, $__bag); ?>
             class="btn btn-secondary" style="width:100%;justify-content:center">
             ✕ Cancel
           </a>
-          <?php if(isset($category)): ?>
-          <form action="<?php echo e(route('admin.categories.destroy', $category->id)); ?>"
-            method="POST" onsubmit="return confirmDelete(this)">
-            <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
-            <button type="submit" class="btn btn-danger" style="width:100%;justify-content:center">
-              🗑️ Delete Category
-            </button>
-          </form>
-          <?php endif; ?>
+        
         </div>
       </div>
 
@@ -192,6 +184,16 @@ unset($__errorArgs, $__bag); ?>
     </div>
   </div>
 </form>
+
+  <?php if(isset($category)): ?>
+          <form action="<?php echo e(route('admin.categories.destroy', $category->id)); ?>"
+            method="POST" onsubmit="return confirmDelete(this)">
+            <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
+            <button type="submit" class="btn btn-danger" style="width:100%;justify-content:center">
+              🗑️ Delete Category
+            </button>
+          </form>
+          <?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
